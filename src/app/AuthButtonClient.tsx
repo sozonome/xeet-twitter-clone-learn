@@ -30,10 +30,18 @@ const AuthButtonClient = ({ session }: AuthButtonProps) => {
   };
 
   if (session) {
-    return <button onClick={handleSignOut}>Logout</button>;
+    return (
+      <button className="text-xs text-gray-400" onClick={handleSignOut}>
+        Logout
+      </button>
+    );
   }
 
-  return <button onClick={handleSignIn}>Login</button>;
+  return (
+    <button className="text-xs text-gray-400" onClick={handleSignIn}>
+      Login
+    </button>
+  );
 };
 
 export default AuthButtonClient;
