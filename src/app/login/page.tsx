@@ -4,6 +4,8 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import GithubButton from "~/app/login/GithubButton";
 
+export const dynamic = "force-dynamic";
+
 const LoginPage = async () => {
   const supabase = createServerComponentClient<Database>({ cookies });
   const {

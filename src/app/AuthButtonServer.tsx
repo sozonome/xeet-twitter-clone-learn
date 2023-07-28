@@ -3,6 +3,8 @@ import React from "react";
 import { cookies } from "next/headers";
 import AuthButtonClient from "~/app/AuthButtonClient";
 
+export const dynamic = "force-dynamic";
+
 const AuthButtonServer = async () => {
   const supabase = createServerComponentClient<Database>({ cookies });
   const {
