@@ -2,6 +2,8 @@ import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import AuthButtonServer from "~/app/AuthButtonServer";
+import Likes from "~/app/Likes";
+import NewTweet from "~/app/NewTweet";
 
 export default async function Home() {
   const supabase = createServerComponentClient<Database>({
@@ -16,12 +18,32 @@ export default async function Home() {
     redirect("/login");
   }
 
-  const { data: tweets } = await supabase.from("tweets").select('*, profiles(*)');
+  const { data } = await supabase
+    .from("tweets")
+    .select("*, profiles(*), likes(*)");
+
+  const tweets =
+    data?.map((tweet) => ({
+      ...tweet,
+      user_has_liked_tweet: tweet.likes.find(
+        (like) => like.user_id === session.user.id
+      ),
+      likes: tweet.likes.length,
+    })) ?? [];
 
   return (
     <>
       <AuthButtonServer />
-      <pre>{JSON.stringify(tweets, null, 2)}</pre>
+      <NewTweet />
+      {tweets?.map((tweet) => (
+        <div key={tweet.id}>
+          <p>
+            {tweet.profiles?.name} {tweet.profiles?.username}
+          </p>
+          <p>{tweet.title}</p>
+          <Likes tweet={tweet} />
+        </div>
+      ))}
     </>
   );
 }
