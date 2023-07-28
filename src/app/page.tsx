@@ -16,7 +16,7 @@ export default async function Home() {
     redirect("/login");
   }
 
-  const { data: tweets } = await supabase.from("tweets").select();
+  const { data: tweets } = await supabase.from("tweets").select('*, profiles(*)');
 
   return (
     <>
